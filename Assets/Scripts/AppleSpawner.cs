@@ -10,24 +10,35 @@ public class AppleSpawner : MonoBehaviour
     public GameObject GreenApple;
     
     [Header("Spawn Settings")]
-    public int totalApples = 80;
-    public float spawnHeightY = 1.0f;
-    public float timeBetweenSpawns = 0.05f;
+    public int totalApples = 100;
+    public float spawnHeightY = -5.0f;
+    public float verticalSpacing = 0.3f;
+
+    [Header("Haptic Prefab")]
+    public GameObject HapticPrefab;
+
+    void Awake()
+    {
+        SpawnApples();
+    }
 
     void Start()
     {   
-        StartCoroutine(SpawnApples());
+        if (HapticPrefab != null)
+        {
+            Instantiate(HapticPrefab, Vector3.zero, Quaternion.identity);
+        }
     }
 
-    IEnumerator SpawnApples()
+    private void SpawnApples()
     {
         Vector3 spawnerPos = transform.position;
 
         for (int i = 0; i < totalApples; i++)
         {
-            float randomX = spawnerPos.x + Random.Range(-0.1f, 0.1f);     
-            float randomZ = spawnerPos.z + Random.Range(-0.1f, 0.1f);
-            float targetY = spawnerPos.y + spawnHeightY;
+            float randomX = spawnerPos.x + Random.Range(-0.2f, 0.2f);     
+            float randomZ = spawnerPos.z + Random.Range(-0.2f, 0.2f);
+            float targetY = spawnerPos.y + spawnHeightY + (i * verticalSpacing);
             Vector3 spawnPosition = new Vector3(randomX, targetY, randomZ);
             Quaternion randomRotation = Random.rotation;
             GameObject spawnedApple = null;
@@ -53,8 +64,6 @@ public class AppleSpawner : MonoBehaviour
                 if (spawnedApple.GetComponent<Rigidbody>() == null) spawnedApple.AddComponent<Rigidbody>();
                 
             }
-
-            yield return new WaitForSeconds(timeBetweenSpawns);
         }
     }
 }
