@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class AppleController : MonoBehaviour
 {
-    [Header("Apple Materials")]
-    public Material[] appleMaterials;
-
     [Header("Audio Config")]
     public AudioClip popSound;
 
@@ -59,11 +56,7 @@ public class AppleController : MonoBehaviour
                 audioSource.PlayOneShot(popSound, 10.0f);
             }
 
-            if (appleMaterials != null && appleMaterials.Length > 0)
-            {
-                int randomIndex = Random.Range(0, appleMaterials.Length);
-                meshRenderer.material = appleMaterials[randomIndex];
-            }
+            AssignRandomColor();
         }
     }
 
@@ -80,6 +73,11 @@ public class AppleController : MonoBehaviour
             audioSource.PlayOneShot(popSound, 3.0f);
         }
 
+        AssignRandomColor();
+    }
+
+    private void AssignRandomColor()
+    {
         meshRenderer.material.color = new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), 255);
     }
 }
